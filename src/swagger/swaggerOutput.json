@@ -1,0 +1,725 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Blog API",
+    "description": "API que simula o funcionamento de um Blog"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Operações com o usuário do blog"
+    },
+    {
+      "name": "Posts",
+      "description": "Operações disponíveis com os Posts do Blog"
+    },
+    {
+      "name": "Categories",
+      "description": "Operações disponíveis com as Categorias dos Posts"
+    },
+    {
+      "name": "Login",
+      "description": "Autenticação do usuário"
+    }
+  ],
+  "paths": {
+    "/login/": {
+      "post": {
+        "tags": ["Login"],
+        "description": "Rota de autenticação",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "example": "senha@123",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo1LCJkaXNwbGF5TmFtZSI6InVzdWFyaW8gZGUgdGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImltYWdlIjoibnVsbCJ9LCJpYXQiOjE2MjAyNDQxODcsImV4cCI6MTYyMDY3NjE4N30.Roc4byj6mYakYqd9LTCozU1hd9k_Vw5IWKGL4hcCVG8"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "Some required fields are missing"
+                  }
+                }
+              }
+          }
+        }
+      }
+    },
+    "/user/": {
+      "post": {
+        "tags": ["Users"],
+        "description": "Cadastra um novo usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "displayName": {
+                  "type": "string",
+                  "example": "João",
+                  "required": true
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "example": "senha@123",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo1LCJkaXNwbGF5TmFtZSI6InVzdWFyaW8gZGUgdGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImltYWdlIjoibnVsbCJ9LCJpYXQiOjE2MjAyNDQxODcsImV4cCI6MTYyMDY3NjE4N30.Roc4byj6mYakYqd9LTCozU1hd9k_Vw5IWKGL4hcCVG8"
+                }
+              }
+            }
+          },
+           "400": {
+            "description": "Erro de Validação",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "\"displayName\" length must be at least 8 characters long"
+                    }
+                  }
+                }
+          },
+          "409": {
+            "description": "Conflict",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "example": "User already registered"
+                  }
+                }
+              }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "description": "Busca todos os usuários",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+              "schema": {
+                "type":"array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "description": "Busca um usuário por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User does not exist"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "delete": {
+        "tags": ["Users"],
+        "description": "Deleta o usuário logado no sistema",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/": {
+      "post": {
+        "tags": ["Categories"],
+        "description": "Cria uma nova Categoria",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Inovação"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          "400": {
+            "description": "Erro de Validação",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example":  "\"name\" is required"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Categories"],
+        "description": "Busca todas as Categorias",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/": {
+      "post": {
+        "tags": ["Posts"],
+        "description": "Cria um novo Post",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Meu primeiro Post"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Esta é a minha primeira vez postando!!"
+                },
+                "categoryIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": [1,2]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "400": {
+            "description": "Erro de Validação",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Some required fields are missing"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Posts"],
+        "description": "Busca Todos os Posts",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Post"
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/{id}": {
+      "put": {
+        "tags": ["Posts"],
+        "description": "Atualiza um Post por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Meu segundo Post"
+                },
+                "content": {
+                  "example": "Esta é a minha segunda vez postando!!"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "400": {
+            "description": "Erro de Validação",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Some required fields are missing"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized user"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Posts"],
+        "description": "Busca um Post por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Post does not exist"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Posts"],
+        "description": "Deleta um Post por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Not Authorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Post does not exist"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/search": {
+      "get": {
+        "tags": ["Posts"],
+        "description": "Busca todos os Posts que contenham o termo de pesquisa",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/Post"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+      "schemas": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            }
+          }
+        },
+        "Category": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "Post": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "title": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "published": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updated": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "user": {
+              "$ref": "#/components/schemas/User"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Category"
+              }
+            }
+          }
+        }
+      }
+    }
+}

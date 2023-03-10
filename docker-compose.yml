@@ -9,6 +9,7 @@ services:
     # Define um user específico, diferente de root para a execução dos comandos
     # user: eval
     # Nome do container para facilitar execução
+    user: node
     container_name: blogs_api
     # Mesmo que `docker run -t`
     tty: true
@@ -25,6 +26,7 @@ services:
       # Monta o diretório atual, com todos os dados do projeto, 
       # dentro do diretório /app
       - ./:/app
+      - ./node_modules:/app/node_modules
     # Lista de serviços do qual este serviço depende
     depends_on:
       # Precisa do banco funcionando antes de subir o node

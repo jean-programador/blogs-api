@@ -15,7 +15,9 @@
     "morgan": "1.10.0",
     "mysql2": "2.1.0",
     "sequelize": "6.3.4",
-    "shelljs": "0.8.4"
+    "shelljs": "0.8.4",
+    "swagger-autogen": "^2.23.1",
+    "swagger-ui-express": "^4.6.2"
   },
   "main": "src/server.js",
   "scripts": {
@@ -31,7 +33,8 @@
     "posttest": "npm run kill:test",
     "test-coverage": "jest -i --verbose --forceExit --coverage",
     "debug": "nodemon .",
-    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json .",
+    "swagger-autogen": "node src/swagger.js"
   },
   "devDependencies": {
     "change-case": "4.1.2",
